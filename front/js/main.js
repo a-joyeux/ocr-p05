@@ -21,5 +21,4 @@ function fillProductList(parent) {
     });
   });
 }
-
 fillProductList(document.getElementById("items"));
