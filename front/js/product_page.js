@@ -4,7 +4,7 @@ import Product from "./models/Product.js";
 /* 
 
 1- Create the cart in localstorage if not exists
-2- Check if the product added is already in the cart
+2- Check if the product added is already in the cart (same id and same color)
 3- If yes -> Sum the qty added and the qty in the cart
     If not -> Add it to the cart
 
@@ -13,12 +13,17 @@ import Product from "./models/Product.js";
 function submitCart() {
   let cart = [];
   let productLine = {};
-  let inputQty = document.getElementById("quantity").value;
+  const inputQty = document.getElementById("quantity").value;
+  const inputColor = document.getElementById("colors").value;
+  console.log(inputColor);
   if (localStorage.getItem("Cart")) {
     cart = JSON.parse(localStorage.getItem("Cart"));
   }
   let existing_item = cart.find((elem) => {
-    return elem.product._id == JSON.parse(localStorage.getItem("Product"))._id;
+    return (
+      elem.product._id == JSON.parse(localStorage.getItem("Product"))._id &&
+      elem.color == inputColor
+    );
   });
   if (existing_item) {
     existing_item.qty += parseInt(inputQty);
@@ -26,6 +31,7 @@ function submitCart() {
     productLine = {
       qty: parseInt(inputQty),
       product: JSON.parse(localStorage.getItem("Product")),
+      color: inputColor,
     };
     cart.push(productLine);
   }

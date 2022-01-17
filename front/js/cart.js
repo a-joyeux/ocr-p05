@@ -11,7 +11,7 @@ function displayCart() {
   getCart().map((productLine) => {
     divCartItems.innerHTML += `<article class="cart__item" data-id="${
       productLine.product._id
-    }" data-color="${productLine.product.colors}">
+    }" data-color="${productLine.color}">
                 <div class="cart__item__img">
                   <img src="${
                     productLine.product.imageUrl
@@ -20,7 +20,7 @@ function displayCart() {
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
                     <h2>${productLine.product.name}</h2>
-                    <p>${productLine.product.colors}</p>
+                    <p>${productLine.color}</p>
                     <p>${parseFloat(productLine.product.price)} €</p>
                   </div>
                   <div class="cart__item__content__settings">
@@ -50,5 +50,11 @@ function displaySummary() {
   divTotalPrice.innerHTML = totalPrice;
 }
 
-displayCart();
-displaySummary();
+function removeFromCart() {
+  let article = document.getElementById("dd");
+}
+
+if (localStorage.getItem("Cart")) {
+  displayCart();
+  displaySummary();
+}
