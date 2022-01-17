@@ -29,11 +29,16 @@ function displayCart() {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
+                      <p class="deleteItem" data-id="${
+                        productLine.product._id
+                      }" data-color="${productLine.color}">Supprimer</p>
                     </div>
                   </div>
                 </div>
               </article>`;
+  });
+  document.querySelectorAll(".deleteItem").forEach((item) => {
+    item.addEventListener("click", removeFromCart);
   });
 }
 
@@ -42,7 +47,6 @@ function displaySummary() {
   const totalPrice = getCart().reduce(
     (prev, next) => parseInt(prev.product.price) + parseInt(next.product.price)
   );
-  console.log(totalPrice);
   let divTotalQty = document.getElementById("totalQuantity");
   let divTotalPrice = document.getElementById("totalPrice");
 
@@ -50,11 +54,33 @@ function displaySummary() {
   divTotalPrice.innerHTML = totalPrice;
 }
 
-function removeFromCart() {
-  let article = document.getElementById("dd");
+/* TO DO
+
+Fuction is deleting from Cart in localStorage but not the div element.
+
+*/
+
+function removeFromCart(event) {
+  const productId = event.target.getAttribute("data-id");
+  const productColor = event.target.getAttribute("data-color");
+
+  const newCart = getCart().filter((elem) => {
+    return (
+      elem.product._id != productId ||
+      (elem.product._id == productId && elem.color != productColor)
+    );
+  });
+  localStorage.setItem("Cart", JSON.stringify(newCart));
+  let divArticle = document.querySelectorAll("cart__item").forEach((elem) => {
+    return (
+      elem.getAttribute("data-id") == productId &&
+      elem.getAttribute("data-color") == productColor
+    );
+  });
+  console.log(divArticle);
 }
 
-if (localStorage.getItem("Cart")) {
+if (getCart() && getCart().length > 0) {
   displayCart();
   displaySummary();
 }
