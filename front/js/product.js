@@ -1,6 +1,6 @@
 import { getOneProduct, getProductHtmlElement } from "./controllers/Product.js";
 import Product from "./models/Product.js";
-import { getCart } from "./cart.js";
+import getCart from "./utils/utils.js";
 
 /* 
 
@@ -11,7 +11,7 @@ import { getCart } from "./cart.js";
 
 */
 
-function submitCart() {
+function addToCart() {
   let cart = getCart();
   let productLine = {};
   const inputQty = document.getElementById("quantity").value;
@@ -78,4 +78,4 @@ function checkProductInputValidity() {
 
 fillOneProduct();
 const submitBtn = document.getElementById("addToCart"); // On récupère l'élément sur lequel on veut détecter le clic
-submitBtn.addEventListener("click", submitCart);
+submitBtn.addEventListener("click", addToCart);

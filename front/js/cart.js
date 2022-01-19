@@ -1,10 +1,7 @@
-function getCart() {
-  let cart = [];
-  if (localStorage.getItem("Cart")) {
-    cart = JSON.parse(localStorage.getItem("Cart"));
-  }
-  return cart;
-}
+import { checkoutCart } from "./controllers/Cart.js";
+import Contact from "./models/Contact.js";
+import Order from "./models/Order.js";
+import { getCart, formDataToObject } from "./utils/utils.js";
 
 function displayCart() {
   let divCartItems = document.getElementById("cart__items");
@@ -92,9 +89,26 @@ function removeFromCart(event) {
   displaySummary();
 }
 
-if (getCart() && getCart().length > 0) {
-  displayCart();
-  displaySummary();
+function submitCart(formElem) {
+  // check input validation
+
+  const formData = new FormData(formElem);
+  const formObject = formDataToObject(formData);
+  const contact = new Contact(formObject);
+  const products = getCart().map((elem) => elem.product._id);
+  const order = new Order(contact, products);
+  checkoutCart(order).then((response) => {
+    localStorage.setItem("orderId", response.orderId);
+  });
 }
 
-export { getCart };
+document.addEventListener("DOMContentLoaded", function () {
+  if (getCart() && getCart().length > 0) {
+    displayCart();
+    displaySummary();
+    document.querySelector("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      submitCart(e.target);
+    });
+  }
+});
