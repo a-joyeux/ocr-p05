@@ -42,23 +42,33 @@ function displayCart() {
   });
 }
 
+/* 
+
+Display sum at the bottom (price & quantity)
+- If cart has only one item ==> get the data of the first item)
+- If the cart has more than one item ==> sum the all the data inside the array
+- Else leave the qty at zero
+*/
+
 function displaySummary() {
-  const totalQty = getCart().reduce((prev, next) => prev.qty + next.qty);
-  const totalPrice = getCart().reduce(
-    (prev, next) => parseInt(prev.product.price) + parseInt(next.product.price)
-  );
+  let totalPrice = 0;
+  let totalQty = 0;
+  if (getCart().length > 1) {
+    totalQty = getCart().reduce((prev, next) => prev.qty + next.qty);
+    totalPrice = getCart().reduce(
+      (prev, next) =>
+        parseInt(prev.product.price) + parseInt(next.product.price)
+    );
+  } else if (getCart().length != 0) {
+    totalQty = getCart()[0].qty;
+    totalPrice = getCart()[0].product.price;
+  }
   let divTotalQty = document.getElementById("totalQuantity");
   let divTotalPrice = document.getElementById("totalPrice");
 
   divTotalQty.innerHTML = totalQty;
   divTotalPrice.innerHTML = totalPrice;
 }
-
-/* TO DO
-
-Fuction is deleting from Cart in localStorage but not the div element.
-
-*/
 
 function removeFromCart(event) {
   const productId = event.target.getAttribute("data-id");
@@ -71,16 +81,20 @@ function removeFromCart(event) {
     );
   });
   localStorage.setItem("Cart", JSON.stringify(newCart));
-  let divArticle = document.querySelectorAll("cart__item").forEach((elem) => {
-    return (
+  document.querySelectorAll(".cart__item").forEach((elem) => {
+    if (
       elem.getAttribute("data-id") == productId &&
       elem.getAttribute("data-color") == productColor
-    );
+    ) {
+      elem.remove();
+    }
   });
-  console.log(divArticle);
+  displaySummary();
 }
 
 if (getCart() && getCart().length > 0) {
   displayCart();
   displaySummary();
 }
+
+export { getCart };

@@ -1,5 +1,6 @@
 import { getOneProduct, getProductHtmlElement } from "./controllers/Product.js";
 import Product from "./models/Product.js";
+import { getCart } from "./cart.js";
 
 /* 
 
@@ -11,13 +12,12 @@ import Product from "./models/Product.js";
 */
 
 function submitCart() {
-  let cart = [];
+  let cart = getCart();
   let productLine = {};
   const inputQty = document.getElementById("quantity").value;
   const inputColor = document.getElementById("colors").value;
-  console.log(inputColor);
-  if (localStorage.getItem("Cart")) {
-    cart = JSON.parse(localStorage.getItem("Cart"));
+  if (!checkProductInputValidity()) {
+    return false;
   }
   let existing_item = cart.find((elem) => {
     return (
@@ -57,6 +57,23 @@ function fillOneProduct() {
       ].innerHTML += `<option value="${color}">${color}</option>`;
     }
   });
+}
+
+/* 
+Check input validity and throw an alert : 
+-> If color is empty
+-> If the quantity is not between 1 and 100 
+*/
+
+function checkProductInputValidity() {
+  if (!document.getElementById("colors").value) {
+    alert("Veuillez selectionnez un colori");
+    return false;
+  } else if (!document.getElementById("quantity").checkValidity()) {
+    alert("Veuillez saisir une quantité entre 1 et 100");
+    return false;
+  }
+  return true;
 }
 
 fillOneProduct();
