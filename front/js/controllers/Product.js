@@ -12,7 +12,7 @@ export function getAllProduct() {
     });
 }
 
-export function getOneProduct(id) {
+export async function getOneProduct(id) {
   return fetch(`http://localhost:3000/api/products/${id}`)
     .then(function (response) {
       if (response.ok) {

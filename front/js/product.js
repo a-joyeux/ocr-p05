@@ -43,13 +43,20 @@ function fillOneProduct() {
 
   const htmlProduct = getProductHtmlElement();
   getOneProduct(id).then((entry) => {
-    const product = new Product(entry);
+    const product = new Product(
+      entry.colors,
+      entry._id,
+      entry.name,
+      entry.imageUrl,
+      entry.description,
+      entry.altTxt
+    );
     localStorage.setItem("Product", JSON.stringify(product));
     htmlProduct[
       "item__img"
     ].innerHTML = `<img src="${product.imageUrl}" alt="Photographie d'un canapé">`;
     htmlProduct["title"].innerHTML = `${product.name}`;
-    htmlProduct["price"].innerHTML = `${product.price}`;
+    htmlProduct["price"].innerHTML = `${entry.price}`;
     htmlProduct["description"].innerHTML = `${product.description}`;
     for (const color of product.colors) {
       htmlProduct[
