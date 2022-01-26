@@ -70,10 +70,10 @@ function displaySummary() {
       divTotalPrice.innerHTML = totalPrice;
       divTotalQty.innerHTML = totalQty;
     });
-    // in case of empty cart
-    divTotalPrice.innerHTML = totalPrice;
-    divTotalQty.innerHTML = totalQty;
   });
+  // in case of empty cart
+  divTotalPrice.innerHTML = totalPrice;
+  divTotalQty.innerHTML = totalQty;
 }
 
 function removeFromCart(event) {
