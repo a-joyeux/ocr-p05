@@ -166,7 +166,7 @@ document.querySelector("form").addEventListener("submit", (e) => {
 });
 
 document.querySelectorAll("input").forEach((elem) => {
-  elem.addEventListener("blur", (e) => {
+  elem.addEventListener("change", (e) => {
     const key = e.target.getAttribute("id");
     e.target.reportValidity();
     if (key == "firstName" || key == "lastName") {
