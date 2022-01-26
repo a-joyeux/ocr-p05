@@ -98,17 +98,33 @@ function removeFromCart(event) {
   displaySummary();
 }
 
-function submitCart(formElem) {
-  // check input validation
+function checkFormInput(field, value) {
+  const hasNumber = /\d/;
 
-  const formData = new FormData(formElem);
-  const formObject = formDataToObject(formData);
+  if (hasNumber.test(value)) {
+    document.getElementById(`${field}ErrorMsg`).innerHTML =
+      "Les chiffres sont interdits";
+    return false;
+  }
+  document.getElementById(`${field}ErrorMsg`).innerHTML = "";
+  return true;
+}
+
+function isCartEmpty(cart) {
+  if (cart.length == 0) {
+    alert("Le panier ne doit pas être vide");
+    return false;
+  }
+  return true;
+}
+
+function submitCart(formObject) {
   const contact = new Contact(formObject);
   const products = getCart().map((elem) => elem.product._id);
   const order = new Order(contact, products);
   checkoutCart(order).then((response) => {
     localStorage.setItem("orderId", response.orderId);
-    window.location.href = "confirmation.html";
+    //window.location.href = "confirmation.html";
   });
 }
 
@@ -131,13 +147,30 @@ function modifyQty(event) {
   displaySummary();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  if (getCart() && getCart().length > 0) {
-    displayCart();
-    displaySummary();
-    document.querySelector("form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      submitCart(e.target);
-    });
+// On page load
+
+displayCart();
+displaySummary();
+
+document.querySelector("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const formObject = formDataToObject(formData);
+  if (
+    checkFormInput("lastName", formObject["lastName"]) &&
+    checkFormInput("firstName", formObject["firstName"]) &&
+    isCartEmpty(getCart())
+  ) {
+    submitCart(formObject);
   }
+});
+
+document.querySelectorAll("input").forEach((elem) => {
+  elem.addEventListener("blur", (e) => {
+    const key = e.target.getAttribute("id");
+    e.target.reportValidity();
+    if (key == "firstName" || key == "lastName") {
+      checkFormInput(key, e.target.value);
+    }
+  });
 });
