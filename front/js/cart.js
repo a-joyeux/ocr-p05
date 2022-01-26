@@ -119,12 +119,18 @@ function isCartEmpty(cart) {
 }
 
 function submitCart(formObject) {
-  const contact = new Contact(formObject);
+  const contact = new Contact(
+    formObject["firstName"],
+    formObject["lastName"],
+    formObject["address"],
+    formObject["city"],
+    formObject["email"]
+  );
   const products = getCart().map((elem) => elem.product._id);
   const order = new Order(contact, products);
   checkoutCart(order).then((response) => {
     localStorage.setItem("orderId", response.orderId);
-    //window.location.href = "confirmation.html";
+    window.location.href = "confirmation.html";
   });
 }
 

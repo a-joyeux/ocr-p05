@@ -1,5 +1,9 @@
 export default class Contact {
-  constructor(params) {
-    Object.assign(this, params);
+  constructor(firstName, lastName, address, city, email) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.address = address;
+    this.city = city;
+    this.email = email;
   }
 }
