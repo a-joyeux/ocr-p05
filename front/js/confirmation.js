@@ -1,8 +1,12 @@
+/*
+
+- Map orderID DOM element with associated URL param
+*/
+
 function displayOrderId() {
-  const orderId = localStorage.getItem("orderId")
-    ? localStorage.getItem("orderId")
-    : null;
-  document.getElementById("orderId").innerHTML = orderId;
+  document.getElementById("orderId").innerHTML = new URLSearchParams(
+    window.location.search
+  ).get("orderId");
 }
 
 displayOrderId();

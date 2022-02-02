@@ -38,6 +38,14 @@ function addToCart() {
   localStorage.setItem("Cart", JSON.stringify(cart));
 }
 
+/*
+
+- Retrieve product ID from the URL param
+- Create Product Object from API response
+- Populate the DOM elements
+
+*/
+
 function fillOneProduct() {
   const id = new URLSearchParams(window.location.search).get("id");
 
@@ -54,7 +62,7 @@ function fillOneProduct() {
     localStorage.setItem("Product", JSON.stringify(product));
     htmlProduct[
       "item__img"
-    ].innerHTML = `<img src="${product.imageUrl}" alt="Photographie d'un canapé">`;
+    ].innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
     htmlProduct["title"].innerHTML = `${product.name}`;
     htmlProduct["price"].innerHTML = `${entry.price}`;
     htmlProduct["description"].innerHTML = `${product.description}`;

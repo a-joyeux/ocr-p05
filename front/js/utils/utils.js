@@ -1,3 +1,9 @@
+/*
+
+- Convert formData type to Object type
+
+*/
+
 function formDataToObject(formElem) {
   let formObject = {};
   formElem.forEach((value, key) => {
@@ -5,6 +11,12 @@ function formDataToObject(formElem) {
   });
   return formObject;
 }
+
+/*
+
+- Retrieve cart from local storage
+
+*/
 export default function getCart() {
   let cart = [];
   if (localStorage.getItem("Cart")) {
